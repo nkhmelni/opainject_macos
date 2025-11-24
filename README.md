@@ -31,8 +31,9 @@ opainject_macos enables runtime dylib injection into arbitrary processes by leve
 - macOS 11.0 or later
 - ARM64 or ARM64e processor
 - Root privileges (sudo)
-- SIP may need to be disabled for injection into certain system processes and overall arm64e handling
 - The target executable's architecture must match the injected dylib's architecture. Both must be either arm64 or arm64e.
+
+**Important:** System Integrity Protection (SIP) may need to be disabled for the processor set enumeration technique to succeed, particularly when targeting hardened runtime binaries. Alternatively, the implementation can be modified to use `task_for_pid()`, which requires the `com.apple.security.cs.debugger` entitlement but only functions on user binaries (not system or App Store binaries).
 
 ## Building
 
@@ -65,7 +66,7 @@ The injection process uses an infinite loop gadget (`b .` instruction, opcode `0
 
 **Task Port Acquisition:** Processor set enumeration technique (PST2)
 
-Rather than using `task_for_pid()` directly, the tool enumerates all tasks via the processor set control port, matching by PID. This approach functions on macOS without requiring private entitlements.
+Rather than using `task_for_pid()` directly, the tool enumerates all tasks via the processor set control port, matching by PID. This approach functions without requiring private entitlements, though it may require SIP to be disabled depending on the target process's hardening configuration.
 
 ## License
 
