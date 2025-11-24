@@ -3,8 +3,6 @@ layout: default
 title: opainject_macos - macOS Dylib Injection Tool
 ---
 
-# opainject_macos
-
 Dynamic library injection tool for macOS using Return-Oriented Programming (ROP) techniques.
 
 ---
